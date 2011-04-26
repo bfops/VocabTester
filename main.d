@@ -17,5 +17,5 @@ void main(string[] args)
         return;
     }
 
-    vocabTest(new BufferedFile(filename));
+    vocabTest(parseDictionary(new BufferedFile(filename)));
 }

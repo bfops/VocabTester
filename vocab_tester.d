@@ -30,25 +30,24 @@ private
     {
         return indexOf(line, seperator) != -1;
     }
-
-    Dictionary parseDictionary(BufferedStream input)
-    {
-        Dictionary dictionary;
-
-        foreach(char[] line; input)
-        {
-            const string strLine = line.idup;
-            if(isValidLine(strLine))
-                dictionary ~= parseLine(strLine);
-        }
-
-        return dictionary;
-    }
 }
 
-void vocabTest(BufferedStream input)
+Dictionary parseDictionary(BufferedStream input)
 {
-    auto dictionary = parseDictionary(input);
+    Dictionary dictionary;
+
+    foreach(char[] line; input)
+    {
+        const string strLine = line.idup;
+        if(isValidLine(strLine))
+            dictionary ~= parseLine(strLine);
+    }
+
+    return dictionary;
+}
+
+void vocabTest(Dictionary dictionary)
+{
     auto rand = MinstdRand(unpredictableSeed);
 
     while(dictionary.length > 0)
