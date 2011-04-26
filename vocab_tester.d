@@ -2,7 +2,7 @@ import std.stream, std.string, std.random;
 
 private
 {
-    static struct DictionaryEntry
+    struct DictionaryEntry
     {
         string term;
         string definition;
