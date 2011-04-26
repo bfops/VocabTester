@@ -1,4 +1,4 @@
-import std.stream, std.string, std.random;
+import std.stream, std.string, std.stdio, std.random, std.algorithm;
 
 private
 {
@@ -48,14 +48,24 @@ Dictionary parseDictionary(BufferedStream input)
 
 void vocabTest(Dictionary dictionary)
 {
+    if(dictionary.length == 0)
+        return;
+
     auto rand = MinstdRand(unpredictableSeed);
+    const index = rand.front % dictionary.length;
+    rand.popFront();
 
-    while(dictionary.length > 0)
-    {
-        const index = rand.front % dictionary.length;
-        rand.popFront();
+    auto entry = dictionary[index];
+    auto question = entry.term;
+    auto answer = entry.definition;
+    // 50% chance of asking the definition instead of the question.
+    if(rand.front % 2 == 1)
+        swap(question, answer);
 
-        auto entry = dictionary[index];
+    writeln(question);
+    readln();
+    writeln(answer);
+    writeln();
 
-    }
+    vocabTest(dictionary[0..index] ~ dictionary[index + 1..$]);
 }
