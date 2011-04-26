@@ -1,4 +1,4 @@
-import std.stream, std.string, std.container;
+import std.stream, std.string, std.random;
 
 private
 {
@@ -48,5 +48,15 @@ private
 
 void vocabTest(BufferedStream input)
 {
-    assert(false, "Unimplemented.");
+    auto dictionary = parseDictionary(input);
+    auto rand = MinstdRand(unpredictableSeed);
+
+    while(dictionary.length > 0)
+    {
+        const index = rand.front % dictionary.length;
+        rand.popFront();
+
+        auto entry = dictionary[index];
+
+    }
 }
