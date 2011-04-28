@@ -46,20 +46,23 @@ Dictionary parseDictionary(BufferedStream input)
     return dictionary;
 }
 
+auto rand()
+{
+    return MinstdRand(unpredictableSeed).front;
+}
+
 void vocabTest(Dictionary dictionary)
 {
     if(dictionary.length == 0)
         return;
 
-    auto rand = MinstdRand(unpredictableSeed);
-    const index = rand.front % dictionary.length;
-    rand.popFront();
+    const index = rand() % dictionary.length;
 
     auto entry = dictionary[index];
     auto question = entry.term;
     auto answer = entry.definition;
     // 50% chance of asking the definition instead of the question.
-    if(rand.front % 2 == 1)
+    if(rand() % 2 == 1)
         swap(question, answer);
 
     writeln(question);
