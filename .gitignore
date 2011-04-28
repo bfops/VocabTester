@@ -16,7 +16,7 @@
 *.depend
 dsss.last
 *.cbTemp
-vocab.xml
+*.vocab
 bin/
 lib/
 obj/
