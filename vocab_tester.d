@@ -46,6 +46,15 @@ Dictionary parseDictionary(BufferedStream input)
     return dictionary;
 }
 
+//Un-stabley delete the index element of the array.
+T[] deleteIndex(T)(T[] array, ulong index)
+{
+    assert(index < array.length);
+
+    swap(array[index], array[$]);
+    return array[0 .. $ - 1];
+}
+
 auto rand()
 {
     return MinstdRand(unpredictableSeed).front;
@@ -70,5 +79,5 @@ void vocabTest(Dictionary dictionary)
     writeln(answer);
     writeln();
 
-    vocabTest(dictionary[0..index] ~ dictionary[index + 1..$]);
+    vocabTest(deleteIndex(dictionary, index));
 }
