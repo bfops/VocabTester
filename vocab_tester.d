@@ -1,3 +1,4 @@
+module vocab_tester;
 import std.stream, std.string, std.stdio, std.random, std.algorithm;
 
 private

@@ -1,3 +1,5 @@
+module main;
+
 import std.stdio, std.file, std.stream;
 import vocab_tester;
 
