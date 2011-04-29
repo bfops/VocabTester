@@ -1,15 +1,18 @@
 module vocab_tester;
-import std.stream, std.string, std.stdio, std.random, std.algorithm;
+
+import std.stream, std.string, std.stdio, std.algorithm;
+import custom_container, custom_random;
 
 private
 {
     struct DictionaryEntry
     {
-        string term;
-        string definition;
+        string term1;
+        string term2;
     }
 
-    //TODO: Pick a more efficient data structure.
+    //Tells what [term1] represents, and what [term2] represents.
+    alias DictionaryEntry Legend;
     alias DictionaryEntry[] Dictionary;
 
     immutable seperator = " | ";
@@ -31,6 +34,14 @@ private
     {
         return indexOf(line, seperator) != -1;
     }
+
+    DictionaryEntry getQAndA(in DictionaryEntry entry)
+    {
+        if(rand() % 2 == 0)
+            return entry;
+
+        return DictionaryEntry(entry.term2, entry.term1);
+    }
 }
 
 Dictionary parseDictionary(BufferedStream input)
@@ -47,20 +58,6 @@ Dictionary parseDictionary(BufferedStream input)
     return dictionary;
 }
 
-//Un-stabley delete the index element of the array.
-T[] deleteIndex(T)(T[] array, ulong index)
-{
-    assert(index < array.length);
-
-    swap(array[index], array[$]);
-    return array[0 .. $ - 1];
-}
-
-auto rand()
-{
-    return MinstdRand(unpredictableSeed).front;
-}
-
 void vocabTest(Dictionary dictionary)
 {
     if(dictionary.length == 0)
@@ -68,17 +65,13 @@ void vocabTest(Dictionary dictionary)
 
     const index = rand() % dictionary.length;
 
-    auto entry = dictionary[index];
-    auto question = entry.term;
-    auto answer = entry.definition;
-    // 50% chance of asking the definition instead of the question.
-    if(rand() % 2 == 1)
-        swap(question, answer);
+    const entry = dictionary[index];
+    const qAndA = getQAndA(entry);
 
-    writeln(question);
+    writeln(qAndA.term1);
     readln();
-    writeln(answer);
+    writeln(qAndA.term2);
     writeln();
 
-    vocabTest(deleteIndex(dictionary, index));
+    vocabTest(deleteArrayIndex(dictionary, index));
 }
