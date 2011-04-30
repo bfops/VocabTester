@@ -1,6 +1,7 @@
 module custom_container;
 
 //Return a copy of [array] with an un-stabley deleted [index] element.
+//Swaps the element to be deleted with the last element, then reduces the length by 1.
 T[] deleteArrayIndex(T)(in T[] array, ulong index)
 {
     assert(index < array.length);
