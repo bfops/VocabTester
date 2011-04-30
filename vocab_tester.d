@@ -7,6 +7,8 @@ private
 {
     struct DictionaryEntry
     {
+        //Under what section this entry is, in the dictionary.
+        string category;
         string term1;
         string term2;
     }
@@ -16,14 +18,14 @@ private
     immutable string seperator = " | ";
 
     //Undefined behaviour for invalid lines.
-    private DictionaryEntry parseLine(string line)
+    private DictionaryEntry parseLine(const string line, const string category)
     {
         assert(isValidLine(line));
 
         const seperatorIndex = indexOf(line, seperator);
         assert(seperatorIndex != -1);
 
-        DictionaryEntry ret = { line[0..seperatorIndex], line[seperatorIndex + seperator.length..$] };
+        DictionaryEntry ret = { category, line[0..seperatorIndex], line[seperatorIndex + seperator.length..$] };
         return ret;
     }
 
@@ -45,12 +47,15 @@ private
 Dictionary parseDictionary(InputStream input)
 {
     Dictionary dictionary;
+    string category = "";
 
     foreach(char[] line; input)
     {
         const string strLine = line.idup;
-        if(isValidLine(strLine))
-            dictionary ~= parseLine(strLine);
+        if(strLine.length > 2 && strLine[0..2] == "--")
+            category = strLine[2..$];
+        else if(isValidLine(strLine))
+            dictionary ~= parseLine(category, strLine);
     }
 
     return dictionary;
@@ -66,6 +71,8 @@ void vocabTest(Dictionary dictionary)
     const entry = dictionary[index];
     const qAndA = getQAndA(entry);
 
+    write(qAndA.category);
+    write(": ");
     writeln(qAndA.term1);
     readln();
     writeln(qAndA.term2);
