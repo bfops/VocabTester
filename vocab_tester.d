@@ -44,7 +44,7 @@ private
     }
 }
 
-Dictionary parseDictionary(BufferedStream input)
+Dictionary parseDictionary(InputStream input)
 {
     Dictionary dictionary;
 
