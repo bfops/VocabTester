@@ -11,11 +11,9 @@ private
         string term2;
     }
 
-    //Tells what [term1] represents, and what [term2] represents.
-    alias DictionaryEntry Legend;
     alias DictionaryEntry[] Dictionary;
 
-    immutable seperator = " | ";
+    immutable string seperator = " | ";
 
     //Undefined behaviour for invalid lines.
     private DictionaryEntry parseLine(string line)
