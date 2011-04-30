@@ -5,8 +5,14 @@ T[] deleteArrayIndex(T)(in T[] array, ulong index)
 {
     assert(index < array.length);
 
+    if(array.length == 1)
+        return [];
+
     auto ret = array[0 .. $ - 1].dup;
-    ret[index] = array[$ - 1];
+
+    //If we're removing anything but the last element.
+    if(index < ret.length)
+        ret[index] = array[$ - 1];
 
     return ret;
 }
