@@ -18,7 +18,7 @@ private
     immutable string seperator = " | ";
 
     //Undefined behaviour for invalid lines.
-    private DictionaryEntry parseLine(const string line, const string category)
+    private DictionaryEntry parseLine(const string category, const string line)
     {
         assert(isValidLine(line));
 
@@ -40,7 +40,7 @@ private
         if(rand() % 2 == 0)
             return entry;
 
-        return DictionaryEntry(entry.term2, entry.term1);
+        return DictionaryEntry(entry.category, entry.term2, entry.term1);
     }
 }
 
