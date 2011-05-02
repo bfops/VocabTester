@@ -30,7 +30,7 @@ private
     }
 
     //Returns true iff [line] defines a valid dictionary entry.
-    bool isValidLine(string line)
+    bool isValidLine(const string line)
     {
         return indexOf(line, seperator) != -1;
     }
