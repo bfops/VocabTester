@@ -2,10 +2,15 @@ from tkinter import *
 
 class Application(Frame):
     class Dictionary:
-        class Entry:
-            def __init__(self, term, definition):
-                self.term = term
-                self.defn = definition
+        class Section:
+            class Entry:
+                def __init__(self, term, definition):
+                    self.term = term
+                    self.defn = definition
+
+            def __init__(self, title = ""):
+                self.name = title
+                self.entries = []
 
         def __init__(self):
             pass
@@ -19,9 +24,10 @@ class Application(Frame):
                 if breakIndex == -1:
                     return None
 
-                return self.Entry(raw[:breakIndex].strip(), raw[breakIndex + 1:].strip())
+                return currentSection.Entry(raw[:breakIndex].strip(), raw[breakIndex + 1:].strip())
 
-            self.entries = []
+            self.sections = [self.Section()]
+            currentSection = self.sections[0]
 
             while True:
                 raw = stream.readline()
@@ -29,11 +35,16 @@ class Application(Frame):
                 if raw == "":
                     break
 
-                # Remove trailing newline.
-                entry = parseLine(raw[:-1])
+                if raw[0 : 2] == "--":
+                    # Remove trailing newline.
+                    currentSection = self.Section(raw[2 : -1].strip())
+                    self.sections.append(currentSection)
+                else:
+                    # Remove trailing newline.
+                    entry = parseLine(raw[:-1])
 
-                if entry != None:
-                    self.entries.append(entry)
+                    if entry != None:
+                        currentSection.entries.append(entry)
 
     def __init__(self, title = "", master = None):
         Frame.__init__(self, master)
