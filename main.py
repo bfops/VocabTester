@@ -42,6 +42,8 @@ class Application(Frame):
 
         self.filename = Entry(self)
         self.filename.grid()
+        self.result = Label(self, text = "Load a file...")
+        self.result.grid()
 
         Button(
             self,
@@ -53,8 +55,12 @@ class Application(Frame):
         try:
             file = open(filename)
         except IOError:
+            self.result["text"] = "Can't find file \"" + filename + "\"."
+            self.result["foreground"] = "#ff0000"
             return
 
+        self.result["text"] = "Success!"
+        self.result["foreground"] = "#00ff00"
         self.dictionary = self.Dictionary(file)
 
 Application("Vocab Tester").mainloop()
