@@ -1,0 +1,171 @@
+--gismu
+cmene | x1 is the name/label given to x2 by x3
+dunda | x1 gives x2 to x3
+batci | x1 bites/pinches x2 at locus x3 with x4
+citka | x1 ingests x2
+gerku | x1 is a canine of breed/species x2
+mlatu | x1 is a feline of species/breed x2
+rectu | x1 is/contains meat from source x2
+sumti | x1 is an argument of selbri x2 in position/case x3 (kind/number)
+bridi | x1 is a predicate relationship with selbri (relation) x2 and sumti (arguments) x3
+vofli | x1 flies by means x2
+cribe | x1 is an ursoid of species x2
+tivni | x1 broadcasts x2 via medium/channel x3 to receiver x4
+fanva | x1 translates x2 to x3 from x4 with result x5
+bajra | x1 runs on x2 using limbs x3 with gait x4
+xamgu | x1 is good/acceptable for x2 by standard x3
+rokci | x1 [is composed of]/contains rock of type x2 from location x3
+cliva | x1 leaves x2 via x3
+kabri | x1 is a fluid-containing vessel (usually cup, glass, mug) containing x2, made of x3
+vecnu | x1 sells x2 to x3 for price/cost x4
+klama | x1 comes/goes to x2 from x3 via x4 by means x5
+cukta | x1 is a book about x2, written by x3 for audience x4, in medium (ebook, paper, etc.) x5
+karce | x1 is a wheeled motor vehicle for transporting x2, propelled by x3
+nelci | x1 likes x2
+prenu | x1 [is a person]/[displays personality] (not necessarily a human)
+crino | x1 is green
+cmima | x1 is [a member of]/among group x2
+barda | x1 is big in aspect x2, compared to standard x3
+cusku | x1 expresses x2 for audience x3 by way of x4
+tavla | x1 talks with x2 about x3 in language x4
+rupnu | x1 is measured in major-money-units (dollar, ruble, yuan) as quantity x2, by monetary system x3
+blanu | x1 is blue
+catra | x1 kills x2 by action x3
+ciska | x1 writes x3 on medium x3 with x4
+finti | x1 creates x2 for purpose x3 from pre-existing ideas x4
+nenri | x1 is completely inside x2
+prami | x1 has strong affection for x2
+pendo | x1 is a friend of x2
+xebni | x1 hates x2
+fengu | x1 is mad at x2 for x3
+cinba | x1 kisses x2 at location on the body x3
+pulji | x1 is an enforcer enforcing x2
+sanga | x1 sings/chants x2 for audience x3
+melbi | x1 is beautiful to x2 in respect x3 by standard x4
+sevzi | x1 is a self/identity of x2.
+gasnu | x1 brings about x2
+sanji | x1 is [aware of]/recognizes x2.
+tcika | x1 is the day-time of x2 on day x3 at location x4
+detri | x1 is the date of x2 at x3, by calendar x4
+lunra | x1 is a moon/satellite of planet x2
+jbena | x1 is born to x2 at time x3 at location x4
+senva | x1 dreams about x2.
+cnino | x1 is new/unfamiliar to x2 in feature x3, by standard x4.
+facki | x1 discovers x2 about x3 (if x2 is omitted, taken to mean x1 finds x3).
+gugde | x1 is a country of people(s) x2 with land x3.
+fraso | x1 is French/Gallic in respect x2.
+barja | x1 is a bar serving x2 to patron(s) x3.
+birje | x1 [is made of]/[contains] beer/ale/brew brewed from x2.
+botpi | x1 is a sealable container for x2, made of x3, with lid x4.
+briju | x1 is an office/bureau/work-place of worker x2 at location x3.
+cpedu | x1 requests/asks/petitions/solicits for x2 of/from x3 in manner/form x4.
+denpa | x1 awaits/waits/pauses for/until x2 at state x3 before starting/continuing x4 (activity/process).
+djica | x1 desires/wants/wishes x2 (event/state) for purpose x3.
+dotco | x1 reflects German/Germanic culture/nationality/language in aspect x2.
+jimpe | x1 understands/comprehends fact/truth x2 (du'u) about subject x3; x1 understands (fi) x3.
+lerci | x1 (event) is late by standard x2.
+nandu | x1 is difficult/hard/challenging for x2 under conditions x3; x1 challenges (non-agentive) x2.
+penmi | x1 meets/encounters x2 at/in location x3.
+pinxe | x1 (agent) drinks/imbibes beverage/drink/liquid refreshment x2 from/out-of container/source x3.
+sruma | x1 assumes/supposes that x2 (du'u) is true about subject x3.
+tcita | x1 is a label/tag of x2 showing information x3 (as in sumti tcita).
+viska | x1 sees/views/perceives visually x2 under conditions x3.
+zvati | x1 (object/event) is at/attending/present at x2 (event/location).
+
+--cmavo
+nu | encapsulates the state/event of the accompanying [bridi].
+se | swaps the first and second places of the bridi in which it appears.
+te | swaps the first and third places of the bridi in which it appears.
+ve | swaps the first and fourth places of the bridi in which it appears.
+xe | swaps the first and fifth places the bridi in which it appears.
+mi'e | [I am called]/[my name is]
+mi | I/me
+do | you
+la [cmene] | the person named [cmene].
+le [selbri] | The thing which I am calling [selbri].
+li [number] | The value of [number].
+[selbri] cu [selbri] | [selbri1] is a sumti to [selbri2], which really is a selbri.
+zo'e | null sumti; indicates the argument is not important.
+fa | indicates the following sumti fills the x1 space; any following arguments are assumed to fill incremented places unless otherwise indicated.
+fe | indicates the following sumti fills the x2 space; any following arguments are assumed to fill incremented places unless otherwise indicated.
+fi | indicates the following sumti fills the x3 space; any following arguments are assumed to fill incremented places unless otherwise indicated.
+fo | indicates the following sumti fills the x4 space; any following arguments are assumed to fill incremented places unless otherwise indicated.
+fu | indicates the following sumti fills the x5 space.
+ko | imperative form of you
+.e'o [imperative sentence] | please [imperative sentence].
+xu [statement] | is [statement] true?
+xo | "fill-in-the-blank" word used to indicate the listener should fill in the replaced number.
+go'i | repeat the objective meaning of the preceding bridi. Taken to mean "yes" when in response to a question.
+na | negates the bridi in which it appears.
+ma | "fill-in-the-blank" word used to indicate the listener should fill in the replaced sumti.
+mo | "fill-in-the-blank" word used to indicate the listener should fill in the replaced selbri.
+[article] [selbri] pe [article] [selbri] | The [selbri1] of [selbri2] (possessive)
+[article] pe [article] [selbri] [selbri] | The [selbri1] of [selbri2] (possessive)po | is uniquely associated with
+po'e | is inalienably associated with
+[number] le [selbri] | [number] of the instances of [selbri]
+le [number] [selbri] | the [number] instances of [selbri]
+[number] lo [selbri] | [number] instances of things which really are [selbri]
+lo [number] [selbri] | [number] instances of [selbri] (ambiguous as to group or individual)
+lu'o | the mass composed of
+lu'a | the members of the mass
+loi | the mass whose members really are
+lei | the mass whose members are described as
+ti'u | adds a place to the current bridi to describe daytime
+de'i | adds a place to the current bridi to describe date
+
+--emot
+.a'o | hope
+.ie | agreement
+.i'e | approval
+.ui | happiness
+.u'i | amusement
+.ua | discovery
+.ue | surprise
+.u'e | wonder
+.u'u | repentance
+.uu | pity/sympathy
+[emot]nai | opposite of [emot]
+
+--math/numerics
+du'e | too many
+so'a | almost all
+so'e | most
+so'i | many
+so'o | several
+so'u | few
+su'e | at most
+su'o | at least
+pi | decimal point
+pi'e | parts seperator (arbitrary, context-dependent magnitude).
+pai | Pi
+ni'u | negative
+ki'o | Thousands seperator (if trailing, it is assumed to mean x10^3)
+[number] fi'u [number] | [number1] out of [number2]
+
+--time/date
+la [number]cac. | [number] o'clock (12-hour time)
+lir. | A.M.
+lec. | P.M.
+nondjed | Sunday
+cibdjed | Wednesday
+vondjed | Thursday
+xavdjed | Saturday
+zeldjed | Sunday
+cibmast | March
+vonmast | April
+xavmast | June
+sozmast | September
+daumast | October
+feimast | November
+gaimast | December
+vensa | Spring
+crisa | Summer
+critu | Autumn
+dunra | Winter
+
+--misc
+brivla | predicate
+selbri | predicate/function
+[selbri] [selbri] | a compound selbri: [selbri1] of type [selbri2].
+[article] [article] [selbri] [selbri] | The [selbri1] of [selbri2] (possessive), [article1] != [article2]
+[number] [selbri] | [number] instances of things which really are [selbri]
