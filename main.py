@@ -88,6 +88,7 @@ class Application(Frame):
         this.master.title(title)
         this.grid()
 
+        # TODO: Allow file browser.
         this.result = Label(this, text = "Load a file...")
         this.result.grid(columnspan = 2048, sticky = W)
 
