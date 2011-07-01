@@ -51,6 +51,10 @@ class Application(Frame):
                         currentSection.entries.append(entry)
 
     def __init__(this, title = "", master = None):
+        def enterPressed():
+            this.loadFile(this.filename.get())
+            this.defnBox.focus_set()
+
         Frame.__init__(this, master)
         this.master.title(title)
         this.grid()
@@ -63,8 +67,7 @@ class Application(Frame):
         this.filename = Entry(this, exportselection = 0)
         this.filename.grid(row = 1, column = 1)
         # TODO: Try loading as they type.
-        # TODO: Give focus to the answer-input box after loading.
-        this.filename.bind("<KeyPress-Return>", lambda e : this.loadFile(this.filename.get()))
+        this.filename.bind("<KeyPress-Return>", lambda e : enterPressed())
 
         this.filler = Label(this)
         this.filler.grid()
@@ -80,6 +83,7 @@ class Application(Frame):
         this.answerBox.grid(columnspan = 2048, stick = W)
 
         this.hideTestArea()
+        this.filename.focus_set()
 
     def showTestArea(this):
         this.filler.grid()
