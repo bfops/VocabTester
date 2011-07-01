@@ -4,21 +4,21 @@ class Application(Frame):
     class Dictionary:
         class Section:
             class Entry:
-                def __init__(self, term, definition):
-                    self.term = term
-                    self.defn = definition
+                def __init__(this, term, definition):
+                    this.term = term
+                    this.defn = definition
 
-            def __init__(self, title = ""):
-                self.name = title
-                self.entries = []
+            def __init__(this, title = ""):
+                this.name = title
+                this.entries = []
 
-        def __init__(self):
+        def __init__(this):
             pass
 
-        def __init__(self, stream):
-            self.load(stream)
+        def __init__(this, stream):
+            this.load(stream)
 
-        def load(self, stream):
+        def load(this, stream):
             def parseLine(raw):
                 breakIndex = raw.find("|")
                 if breakIndex == -1:
@@ -26,8 +26,8 @@ class Application(Frame):
 
                 return currentSection.Entry(raw[:breakIndex].strip(), raw[breakIndex + 1:].strip())
 
-            self.sections = [self.Section()]
-            currentSection = self.sections[0]
+            this.sections = [this.Section()]
+            currentSection = this.sections[0]
 
             while True:
                 raw = stream.readline()
@@ -37,8 +37,8 @@ class Application(Frame):
 
                 if raw[0 : 2] == "--":
                     # Remove trailing newline.
-                    currentSection = self.Section(raw[2 : -1].strip())
-                    self.sections.append(currentSection)
+                    currentSection = this.Section(raw[2 : -1].strip())
+                    this.sections.append(currentSection)
                 else:
                     # Remove trailing newline.
                     entry = parseLine(raw[:-1])
@@ -46,59 +46,59 @@ class Application(Frame):
                     if entry != None:
                         currentSection.entries.append(entry)
 
-    def __init__(self, title = "", master = None):
-        Frame.__init__(self, master)
-        self.master.title(title)
-        self.grid()
+    def __init__(this, title = "", master = None):
+        Frame.__init__(this, master)
+        this.master.title(title)
+        this.grid()
 
-        self.result = Label(self, text = "Load a file...")
-        self.result.grid(columnspan = 2048, sticky = W)
-        Label(self, text = "Dictionary filename: ").grid()
-        self.filename = Entry(self)
-        self.filename.grid(row = 1, column = 1)
+        this.result = Label(this, text = "Load a file...")
+        this.result.grid(columnspan = 2048, sticky = W)
+        Label(this, text = "Dictionary filename: ").grid()
+        this.filename = Entry(this)
+        this.filename.grid(row = 1, column = 1)
 
         Button(
-            self,
+            this,
             text = "Load file",
-            command = lambda : self.loadFile(self.filename.get())
+            command = lambda : this.loadFile(this.filename.get())
         ).grid(row = 1, column = 2)
 
-        self.filler = Label(self)
-        self.filler.grid()
+        this.filler = Label(this)
+        this.filler.grid()
 
-        self.termBox = Label(self)
-        self.termBox.grid(columnspan = 2048)
+        this.termBox = Label(this)
+        this.termBox.grid(columnspan = 2048)
 
-        self.defnBox = Entry(self, width = 64)
-        self.defnBox.grid(columnspan = 2048)
+        this.defnBox = Entry(this, width = 64)
+        this.defnBox.grid(columnspan = 2048)
 
-        self.hideTestArea()
+        this.hideTestArea()
 
-    def showTestArea(self):
-        self.filler.grid()
-        self.termBox.grid()
-        self.defnBox.grid()
+    def showTestArea(this):
+        this.filler.grid()
+        this.termBox.grid()
+        this.defnBox.grid()
 
-    def hideTestArea(self):
-        self.filler.grid_remove()
-        self.termBox.grid_remove()
-        self.defnBox.grid_remove()
+    def hideTestArea(this):
+        this.filler.grid_remove()
+        this.termBox.grid_remove()
+        this.defnBox.grid_remove()
 
-    def loadFile(self, filename):
+    def loadFile(this, filename):
         try:
             file = open(filename)
         except IOError:
-            self.result["text"] = "Can't find file \"" + filename + "\"."
-            self.result["foreground"] = "#ff0000"
+            this.result["text"] = "Can't find file \"" + filename + "\"."
+            this.result["foreground"] = "#ff0000"
 
-            self.hideTestArea()
+            this.hideTestArea()
             return
 
-        self.result["text"] = "Success!"
-        self.result["foreground"] = "#00ff00"
-        self.dictionary = self.Dictionary(file)
+        this.result["text"] = "Success!"
+        this.result["foreground"] = "#00ff00"
+        this.dictionary = this.Dictionary(file)
 
-        self.showTestArea()
+        this.showTestArea()
 
 Application("Vocab Tester").mainloop()
 
