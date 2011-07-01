@@ -63,6 +63,7 @@ class Application(Frame):
         this.filename = Entry(this, exportselection = 0)
         this.filename.grid(row = 1, column = 1)
         # TODO: Try loading as they type.
+        # TODO: Give focus to the answer-input box after loading.
         this.filename.bind("<KeyPress-Return>", lambda e : this.loadFile(this.filename.get()))
 
         this.filler = Label(this)
