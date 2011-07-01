@@ -57,7 +57,9 @@ class Application(Frame):
 
         this.result = Label(this, text = "Load a file...")
         this.result.grid(columnspan = 2048, sticky = W)
+
         Label(this, text = "Dictionary filename: ").grid()
+
         this.filename = Entry(this)
         this.filename.grid(row = 1, column = 1)
 
@@ -71,7 +73,7 @@ class Application(Frame):
         this.filler.grid()
 
         this.termBox = Label(this)
-        this.termBox.grid(columnspan = 2048)
+        this.termBox.grid(columnspan = 2048, sticky = W)
 
         this.defnBox = Entry(this, width = 64)
         this.defnBox.grid(columnspan = 2048)
