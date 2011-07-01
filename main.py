@@ -65,12 +65,6 @@ class Application(Frame):
         # TODO: Try loading as they type.
         this.filename.bind("<KeyPress-Return>", lambda e : this.loadFile(this.filename.get()))
 
-        Button(
-            this,
-            text = "Load file",
-            command = lambda : this.loadFile(this.filename.get())
-        ).grid(row = 1, column = 2)
-
         this.filler = Label(this)
         this.filler.grid()
 
