@@ -181,7 +181,8 @@ class Application(Frame):
         this.showTestArea()
         this.test()
 
-# TODO: Disable resizing.
 random.seed()
-Application("Vocab Tester").mainloop()
+root = Tk()
+root.resizable(False, False)
+Application("Vocab Tester", root).mainloop()
 
