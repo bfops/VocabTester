@@ -36,17 +36,21 @@ class Application(Frame):
                 if raw == "":
                     break
 
+                # Remove trailing newline.
+                raw = raw[:-1]
+
+                # If it's a section header (of the form "--section").
                 if raw[0 : 2] == "--":
-                    # Remove trailing newline.
-                    currentSection = this.Section(raw[2 : -1].strip())
+                    currentSection = this.Section(raw[2:].strip())
                     this.sections.append(currentSection)
+                # It's an actual definition.
                 else:
                     if currentSection == None:
                         currentSection = this.Section("Uncategorized")
                         this.sections.append(currentSection)
 
                     # Remove trailing newline.
-                    entry = parseLine(raw[:-1])
+                    entry = parseLine(raw)
 
                     if entry != None:
                         currentSection.entries.append(entry)
@@ -121,9 +125,11 @@ class Application(Frame):
             return (section.name, entry.term, entry.defn)
 
         entry = getRandomEntry()
+        # Whether to use the term or definition as the "question".
         termOrDefn = random.randint(1, 2)
 
         this.termBox["text"] = entry[0] + ": " + entry[termOrDefn]
+        # Clear the currently entered answer.
         this.defnBox.delete(0, len(this.defnBox.get()))
         this.answerBox["text"] = ""
 
@@ -148,6 +154,7 @@ class Application(Frame):
         this.showTestArea()
         this.test()
 
+# TODO: Disable resizing.
 random.seed()
 Application("Vocab Tester").mainloop()
 
