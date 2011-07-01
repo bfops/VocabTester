@@ -76,7 +76,7 @@ class Application(Frame):
         this.termBox.grid(columnspan = 2048, sticky = W)
 
         this.defnBox = Entry(this, width = 64)
-        this.defnBox.grid(columnspan = 2048)
+        this.defnBox.grid(columnspan = 2048, sticky = W)
 
         this.answerBox = Label(this)
         this.answerBox["foreground"] = "#0000ff"
