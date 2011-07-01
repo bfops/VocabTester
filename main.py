@@ -76,9 +76,9 @@ class Application(Frame):
                         currentSection.entries.append(entry)
 
     def __init__(this, title = "", master = None):
-        def enterPressed():
-            this.loadFile(this.filename.get())
-            this.defnBox.focus_set()
+        def attemptFileLoad():
+            if this.loadFile(this.filename.get()):
+                this.defnBox.focus_set()
 
         Frame.__init__(this, master)
 
@@ -97,7 +97,7 @@ class Application(Frame):
         this.filename = Entry(this, exportselection = 0)
         this.filename.grid(row = 1, column = 1)
         # TODO: Try loading as they type.
-        this.filename.bind("<KeyPress-Return>", lambda e : enterPressed())
+        this.filename.bind("<KeyPress-Return>", lambda e : attemptFileLoad())
 
         this.filler = Label(this)
         this.filler.grid()
@@ -169,6 +169,7 @@ class Application(Frame):
 
         # TODO: Fix case where dictionary runs out.
 
+    # Returns true if the file loaded successfully.
     def loadFile(this, filename):
         try:
             file = open(filename)
@@ -177,7 +178,7 @@ class Application(Frame):
             this.result["foreground"] = "#ff0000"
 
             this.hideTestArea()
-            return
+            return False
 
         this.result["text"] = "Success!"
         this.result["foreground"] = "#00ff00"
@@ -185,6 +186,8 @@ class Application(Frame):
 
         this.showTestArea()
         this.test()
+
+        return True
 
 random.seed()
 root = Tk()
