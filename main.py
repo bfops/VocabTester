@@ -27,6 +27,26 @@ class Application(Frame):
 
                 return currentSection.Entry(raw[:breakIndex].strip(), raw[breakIndex + 1:].strip())
 
+            def readLanguage(stream):
+                # Remove trailing newline.
+                raw = stream.readline()[:-1]
+
+                if raw[:1] != "{" or raw[-1:] != "}":
+                    return None
+
+                raw = raw[1 : -1]
+                splitIndex = raw.find("|")
+                if splitIndex == -1:
+                    return None
+
+                return (raw[:splitIndex].strip(), raw[splitIndex + 1:].strip())
+
+            this.language = readLanguage(stream)
+
+            if this.language == None:
+                del this.language
+                return
+
             this.sections = []
             currentSection = None
 
@@ -77,6 +97,10 @@ class Application(Frame):
         this.filler = Label(this)
         this.filler.grid()
 
+        this.languageBox = Label(this)
+        this.languageBox.grid(columnspan = 2048, sticky = W)
+        this.languageBox["foreground"] = "#0000ff"
+
         this.termBox = Label(this)
         this.termBox.grid(columnspan = 2048, sticky = W)
 
@@ -84,7 +108,7 @@ class Application(Frame):
         this.defnBox.grid(columnspan = 2048, sticky = W)
 
         this.answerBox = Label(this)
-        this.answerBox["foreground"] = "#0000ff"
+        this.answerBox["foreground"] = "#ff00ff"
         this.answerBox.grid(columnspan = 2048, stick = W)
 
         this.hideTestArea()
@@ -92,12 +116,14 @@ class Application(Frame):
 
     def showTestArea(this):
         this.filler.grid()
+        this.languageBox.grid()
         this.termBox.grid()
         this.defnBox.grid()
         this.answerBox.grid()
 
     def hideTestArea(this):
         this.filler.grid_remove()
+        this.languageBox.grid_remove()
         this.termBox.grid_remove()
         this.defnBox.grid_remove()
         this.answerBox.grid_remove()
@@ -128,6 +154,7 @@ class Application(Frame):
         # Whether to use the term or definition as the "question".
         termOrDefn = random.randint(1, 2)
 
+        this.languageBox["text"] = this.dictionary.language[termOrDefn - 1] + " to " + this.dictionary.language[2 - termOrDefn]
         this.termBox["text"] = entry[0] + ": " + entry[termOrDefn]
         # Clear the currently entered answer.
         this.defnBox.delete(0, len(this.defnBox.get()))
