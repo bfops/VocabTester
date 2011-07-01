@@ -80,17 +80,23 @@ class Application(Frame):
         this.defnBox = Entry(this, width = 64)
         this.defnBox.grid(columnspan = 2048)
 
+        this.answerBox = Label(this)
+        this.answerBox["foreground"] = "#0000ff"
+        this.answerBox.grid(columnspan = 2048, stick = W)
+
         this.hideTestArea()
 
     def showTestArea(this):
         this.filler.grid()
         this.termBox.grid()
         this.defnBox.grid()
+        this.answerBox.grid()
 
     def hideTestArea(this):
         this.filler.grid_remove()
         this.termBox.grid_remove()
         this.defnBox.grid_remove()
+        this.answerBox.grid_remove()
 
     def loadFile(this, filename):
         try:
