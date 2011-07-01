@@ -1,4 +1,5 @@
 from tkinter import *
+import random
 
 class Application(Frame):
     class Dictionary:
@@ -102,16 +103,27 @@ class Application(Frame):
 
     def test(this):
         def showAnswer(e):
-            this.answerBox["text"] = entry.defn
+            this.answerBox["text"] = entry[3 - termOrDefn]
             this.bind_all("<KeyPress-Return>", lambda e : this.test())
 
-        section = this.dictionary.sections[0]
-        entry = section.entries.pop(0)
+        # Returns a tuple of (category, term, definition)
+        def getRandomEntry():
+            sectionN = random.randrange(0, len(this.dictionary.sections))
+            section = this.dictionary.sections[sectionN]
+            sectionLength = len(section.entries)
 
-        if len(section.entries) == 0:
-            this.dictionary.sections.pop(0)
+            if sectionLength == 1:
+                dictionaries.sections.pop(sectionN)
 
-        this.termBox["text"] = section.name + ": " + entry.term
+            entryN = random.randrange(0, sectionLength)
+            entry = section.entries.pop(entryN)
+
+            return (section.name, entry.term, entry.defn)
+
+        entry = getRandomEntry()
+        termOrDefn = random.randint(1, 2)
+
+        this.termBox["text"] = entry[0] + ": " + entry[termOrDefn]
         this.defnBox.delete(0, len(this.defnBox.get()))
         this.answerBox["text"] = ""
 
@@ -136,5 +148,6 @@ class Application(Frame):
         this.showTestArea()
         this.test()
 
+random.seed()
 Application("Vocab Tester").mainloop()
 
