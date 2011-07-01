@@ -81,6 +81,7 @@ class Application(Frame):
             this.defnBox.focus_set()
 
         Frame.__init__(this, master)
+        # Set up the window itself
         this.master.title(title)
         this.grid()
 
