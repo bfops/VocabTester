@@ -98,6 +98,28 @@ class Application(Frame):
         this.defnBox.grid_remove()
         this.answerBox.grid_remove()
 
+        # Unbind any outstanding key events.
+        this.bind_all("<KeyPress-Return>")
+
+    def test(this):
+        def showAnswer(e):
+            this.answerBox["text"] = entry.defn
+            this.bind_all("<KeyPress-Return>", lambda e : this.test())
+
+        section = this.dictionary.sections[0]
+        entry = section.entries.pop(0)
+
+        if len(section.entries) == 0:
+            this.dictionary.sections.pop(0)
+
+        this.termBox["text"] = section.name + ": " + entry.term
+        this.defnBox.delete(0, len(this.defnBox.get()))
+        this.answerBox["text"] = ""
+
+        this.bind_all("<KeyPress-Return>", showAnswer)
+
+        # TODO: Fix case where dictionary runs out.
+
     def loadFile(this, filename):
         try:
             file = open(filename)
@@ -113,6 +135,7 @@ class Application(Frame):
         this.dictionary = this.Dictionary(file)
 
         this.showTestArea()
+        this.test()
 
 Application("Vocab Tester").mainloop()
 
