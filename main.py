@@ -60,8 +60,9 @@ class Application(Frame):
 
         Label(this, text = "Dictionary filename: ").grid()
 
-        this.filename = Entry(this)
+        this.filename = Entry(this, exportselection = 0)
         this.filename.grid(row = 1, column = 1)
+        # TODO: Try loading as they type.
         this.filename.bind("<KeyPress-Return>", lambda e : this.loadFile(this.filename.get()))
 
         Button(
