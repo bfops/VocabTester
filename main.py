@@ -73,17 +73,18 @@ class Application(Frame):
                     if entry != None:
                         currentSection.entries.append(entry)
 
-    def __init__(this, title = "", master = None):
+    def __init__(this, title = ""):
         def attemptFileLoad():
             if this.loadFile(this.filename.get()):
                 this.defnBox.focus_set()
 
-        Frame.__init__(this, master)
+        Frame.__init__(this)
 
         this.bind_all("<KeyPress-Escape>", lambda e : this.quit())
 
         # Set up the window itself
-        this.master.title(title)
+        this.winfo_toplevel().title(title)
+        this.winfo_toplevel().resizable(False, False)
         this.grid()
 
         # TODO: Allow file browser.
@@ -188,7 +189,5 @@ class Application(Frame):
         return True
 
 random.seed()
-root = Tk()
-root.resizable(False, False)
-Application("Vocab Tester", root).mainloop()
+Application("Vocab Tester").mainloop()
 
