@@ -13,11 +13,9 @@ class Application(Frame):
                 this.name = title
                 this.entries = []
 
-        def __init__(this):
-            pass
-
-        def __init__(this, stream):
-            this.load(stream)
+        def __init__(this, stream = None):
+            if stream != None:
+                this.load(stream)
 
         def load(this, stream):
             def parseLine(raw):
