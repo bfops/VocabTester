@@ -81,6 +81,9 @@ class Application(Frame):
             this.defnBox.focus_set()
 
         Frame.__init__(this, master)
+
+        this.bind_all("<KeyPress-Escape>", lambda e : this.quit())
+
         # Set up the window itself
         this.master.title(title)
         this.grid()
