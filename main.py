@@ -93,10 +93,10 @@ class Application(Frame):
 
         Label(this, text = "Dictionary filename: ").grid()
 
-        this.filename = Entry(this, exportselection = 0)
+        this.filenameString = StringVar()
+        this.filenameString.trace("w", lambda *args : attemptFileLoad())
+        this.filename = Entry(this, textvariable = this.filenameString, exportselection = 0)
         this.filename.grid(row = 1, column = 1)
-        # TODO: Try loading as they type.
-        this.filename.bind("<KeyPress-Return>", lambda e : attemptFileLoad())
 
         this.filler = Label(this)
         this.filler.grid()
