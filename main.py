@@ -26,8 +26,8 @@ class Application(Frame):
 
                 return currentSection.Entry(raw[:breakIndex].strip(), raw[breakIndex + 1:].strip())
 
-            this.sections = [this.Section()]
-            currentSection = this.sections[0]
+            this.sections = []
+            currentSection = None
 
             while True:
                 raw = stream.readline()
@@ -40,6 +40,10 @@ class Application(Frame):
                     currentSection = this.Section(raw[2 : -1].strip())
                     this.sections.append(currentSection)
                 else:
+                    if currentSection == None:
+                        currentSection = this.Section("Uncategorized")
+                        this.sections.append(currentSection)
+
                     # Remove trailing newline.
                     entry = parseLine(raw[:-1])
 
