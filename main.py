@@ -51,16 +51,38 @@ class Application(Frame):
         self.master.title(title)
         self.grid()
 
-        self.filename = Entry(self)
-        self.filename.grid()
         self.result = Label(self, text = "Load a file...")
-        self.result.grid()
+        self.result.grid(columnspan = 2048, sticky = W)
+        Label(self, text = "Dictionary filename: ").grid()
+        self.filename = Entry(self)
+        self.filename.grid(row = 1, column = 1)
 
         Button(
             self,
             text = "Load file",
             command = lambda : self.loadFile(self.filename.get())
-        ).grid(row = 0, column = 1)
+        ).grid(row = 1, column = 2)
+
+        self.filler = Label(self)
+        self.filler.grid()
+
+        self.termBox = Label(self)
+        self.termBox.grid(columnspan = 2048)
+
+        self.defnBox = Entry(self, width = 64)
+        self.defnBox.grid(columnspan = 2048)
+
+        self.hideTestArea()
+
+    def showTestArea(self):
+        self.filler.grid()
+        self.termBox.grid()
+        self.defnBox.grid()
+
+    def hideTestArea(self):
+        self.filler.grid_remove()
+        self.termBox.grid_remove()
+        self.defnBox.grid_remove()
 
     def loadFile(self, filename):
         try:
@@ -68,11 +90,15 @@ class Application(Frame):
         except IOError:
             self.result["text"] = "Can't find file \"" + filename + "\"."
             self.result["foreground"] = "#ff0000"
+
+            self.hideTestArea()
             return
 
         self.result["text"] = "Success!"
         self.result["foreground"] = "#00ff00"
         self.dictionary = self.Dictionary(file)
+
+        self.showTestArea()
 
 Application("Vocab Tester").mainloop()
 
