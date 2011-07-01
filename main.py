@@ -62,6 +62,7 @@ class Application(Frame):
 
         this.filename = Entry(this)
         this.filename.grid(row = 1, column = 1)
+        this.filename.bind("<KeyPress-Return>", lambda e : this.loadFile(this.filename.get()))
 
         Button(
             this,
