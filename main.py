@@ -146,8 +146,12 @@ class Application(Frame):
             section = this.dictionary.sections[sectionN]
             sectionLength = len(section.entries)
 
-            if sectionLength == 1:
+            if sectionLength <= 1:
                 dictionary.sections.pop(sectionN)
+
+                # If the section was empty, just retry the entire function.
+                if sectionLength == 0:
+                    return getRandomEntry()
 
             entryN = random.randrange(0, sectionLength)
             entry = section.entries.pop(entryN)
