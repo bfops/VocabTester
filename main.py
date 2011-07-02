@@ -45,8 +45,8 @@ class Application(Frame):
                 del this.language
                 return
 
-            this.sections = []
-            currentSection = None
+            this.sections = [this.Section("Uncategorized")]
+            currentSection = this.sections[0]
 
             while True:
                 raw = stream.readline()
@@ -63,10 +63,6 @@ class Application(Frame):
                     this.sections.append(currentSection)
                 # It's an actual definition.
                 else:
-                    if currentSection == None:
-                        currentSection = this.Section("Uncategorized")
-                        this.sections.append(currentSection)
-
                     # Remove trailing newline.
                     entry = parseLine(raw)
 
