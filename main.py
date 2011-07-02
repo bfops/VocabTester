@@ -147,7 +147,7 @@ class Application(Frame):
             sectionLength = len(section.entries)
 
             if sectionLength == 1:
-                dictionaries.sections.pop(sectionN)
+                dictionary.sections.pop(sectionN)
 
             entryN = random.randrange(0, sectionLength)
             entry = section.entries.pop(entryN)
