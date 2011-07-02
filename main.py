@@ -14,6 +14,8 @@ class Application(Frame):
                 this.entries = []
 
         def __init__(this, stream = None):
+            this.sections = []
+
             if stream != None:
                 this.load(stream)
 
