@@ -145,7 +145,7 @@ class Application(Frame):
             sectionLength = len(section.entries)
 
             if sectionLength <= 1:
-                dictionary.sections.pop(sectionN)
+                this.dictionary.sections.pop(sectionN)
 
                 # If the section was empty, just retry the entire function.
                 if sectionLength == 0:
@@ -183,7 +183,7 @@ class Application(Frame):
 
         this.result["text"] = "Success!"
         this.result["foreground"] = "#00ff00"
-        this.dictionary = this.Dictionary(file)
+        this.dictionary.load(file)
 
         this.showTestArea()
         this.test()
