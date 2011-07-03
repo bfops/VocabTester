@@ -97,7 +97,7 @@ class Application(Frame):
             Label(this, text = "Term").grid(columnspan = 2, row = 0, column = 3)
             Label(this, text = "Definition").grid(row = 0, column = 6)
 
-            this.sectionBox = Listbox(this, selectmode = SINGLE)
+            this.sectionBox = Listbox(this)
             this.sectionBox.grid(columnspan = 2)
             this.sectionBox.bind(
                 "<<ListboxSelect>>",
@@ -108,7 +108,7 @@ class Application(Frame):
             this.sectionScroll.grid(row = 1, column = 2, sticky = N+S)
             this.sectionBox["yscrollcommand"] = this.sectionScroll.set
 
-            this.entryBox = Listbox(this, selectmode = SINGLE)
+            this.entryBox = Listbox(this)
             this.entryBox.grid(columnspan = 2, row = 1, column = 3)
             this.entryScroll = Scrollbar(this, command = this.entryBox.yview, takefocus = 0)
             this.entryScroll.grid(row = 1, column = 5, sticky = N+S)
