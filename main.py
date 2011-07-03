@@ -83,6 +83,59 @@ class Application(Frame):
                     end -= 1
                 else:
                     i += 1
+
+    class DictionaryInterface(Toplevel):
+        def __init__(this, dictionary, title = ""):
+            Toplevel.__init__(this)
+            this.resizable(False, False)
+            this.title(title)
+            this.grid()
+
+            this.dictionary = dictionary
+
+            Label(this, text = "Section").grid(columnspan = 2)
+            Label(this, text = "Term").grid(columnspan = 2, row = 0, column = 3)
+            Label(this, text = "Definition").grid(row = 0, column = 6)
+
+            this.sectionBox = Listbox(this, selectmode = SINGLE)
+            this.sectionBox.grid(columnspan = 2)
+            this.sectionScroll = Scrollbar(this, command = this.sectionBox.yview, takefocus = 0)
+            this.sectionScroll.grid(row = 1, column = 2, sticky = N+S)
+            this.sectionBox["yscrollcommand"] = this.sectionScroll.set
+
+            this.entryBox = Listbox(this, selectmode = SINGLE)
+            this.entryBox.grid(columnspan = 2, row = 1, column = 3)
+            this.entryScroll = Scrollbar(this, command = this.entryBox.yview, takefocus = 0)
+            this.entryScroll.grid(row = 1, column = 5, sticky = N+S)
+            this.entryBox["yscrollcommand"] = this.entryScroll.set
+
+            this.defnBox = Text(this, width = 20, height = 10)
+            this.defnBox.grid(row = 1, column = 6)
+
+            Button(this, text = "Add", command = this.addNamedSection).grid(sticky = E+W)
+            Button(this, text = "Add", command = this.addNamedEntry).grid(row = 2, column = 3, sticky = E+W)
+
+            Button(this, text = "Rename", command = this.renameSelectedSection).grid(row = 2, column = 1, sticky = E+W)
+            Button(this, text = "Rename", command = this.renameSelectedEntry).grid(row = 2, column = 4, sticky = E+W)
+
+            this.sectionName = Entry(this)
+            this.sectionName.grid(columnspan = 2)
+
+            this.entryName = Entry(this)
+            this.entryName.grid(columnspan = 2, row = 3, column = 3)
+
+        def addNamedSection(this):
+            pass
+
+        def addNamedEntry(this):
+            pass
+
+        def renameSelectedSection(this):
+            pass
+
+        def renameSelectedEntry(this):
+            pass
+
     def __init__(this, title = ""):
         def attemptFileLoad():
             if this.loadFile(this.filename.get()):
@@ -96,6 +149,10 @@ class Application(Frame):
         this.winfo_toplevel().title(title)
         this.winfo_toplevel().resizable(False, False)
         this.grid()
+
+        # TODO: Closing any way window should leave the others alive.
+        this.dictionary = this.Dictionary()
+        this.dictionaryWindow = this.DictionaryInterface(this.dictionary, "Dictionary")
 
         # TODO: Allow file browser.
         this.result = Label(this, text = "Load a file...")
@@ -134,6 +191,7 @@ class Application(Frame):
         this.termBox.grid()
         this.defnBox.grid()
         this.answerBox.grid()
+        this.dictionaryWindow.deiconify()
 
     def hideTestArea(this):
         this.filler.grid_remove()
@@ -141,6 +199,7 @@ class Application(Frame):
         this.termBox.grid_remove()
         this.defnBox.grid_remove()
         this.answerBox.grid_remove()
+        this.dictionaryWindow.withdraw()
 
         # Unbind any outstanding key events.
         this.bind_all("<KeyPress-Return>")
