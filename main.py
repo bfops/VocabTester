@@ -2,6 +2,7 @@ from tkinter import *
 import random
 
 class Application(Frame):
+    # TODO: Entries can have multiple definitions.
     class Dictionary:
         class Section:
             class Entry:
