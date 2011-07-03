@@ -165,7 +165,7 @@ class Application(Frame):
 
         Frame.__init__(this)
 
-        this.bind_all("<KeyPress-Escape>", lambda e : this.quit())
+        this.bind_all("<Control-KeyPress-q>", lambda e : this.quit())
 
         # Set up the window itself
         this.winfo_toplevel().title(title)
