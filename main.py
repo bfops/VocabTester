@@ -84,7 +84,7 @@ class Application(Frame):
                 else:
                     i += 1
 
-    class DictionaryInterface(Toplevel):
+    class DictionaryGUI(Toplevel):
         def __init__(this, dictionary, title = ""):
             Toplevel.__init__(this)
             this.resizable(False, False)
@@ -174,7 +174,7 @@ class Application(Frame):
 
         # TODO: Closing any way window should leave the others alive.
         this.dictionary = this.Dictionary()
-        this.dictionaryWindow = this.DictionaryInterface(this.dictionary, "Dictionary")
+        this.dictionaryWindow = this.DictionaryGUI(this.dictionary, "Dictionary")
 
         # TODO: Allow file browser.
         this.result = Label(this, text = "Load a file...")
