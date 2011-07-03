@@ -71,6 +71,17 @@ class Application(Frame):
                     if entry != None:
                         currentSection.entries.append(entry)
 
+        # Remove all empty sections.
+        def prune(this):
+            i = 0
+            end = len(this.sections)
+
+            while i < end:
+                if len(this.sections[i].entries) == 0:
+                    this.sections.pop(i)
+                    end -= 1
+                else:
+                    i += 1
     def __init__(this, title = ""):
         def attemptFileLoad():
             if this.loadFile(this.filename.get()):
@@ -144,15 +155,11 @@ class Application(Frame):
             section = this.dictionary.sections[sectionN]
             sectionLength = len(section.entries)
 
-            if sectionLength <= 1:
-                this.dictionary.sections.pop(sectionN)
-
-                # If the section was empty, just retry the entire function.
-                if sectionLength == 0:
-                    return getRandomEntry()
-
             entryN = random.randrange(0, sectionLength)
             entry = section.entries.pop(entryN)
+
+            if sectionLength == 1:
+                this.dictionary.sections.pop(sectionN)
 
             return (section.name, entry.term, entry.defn)
 
@@ -184,6 +191,7 @@ class Application(Frame):
         this.result["text"] = "Success!"
         this.result["foreground"] = "#00ff00"
         this.dictionary.load(file)
+        this.dictionary.prune()
 
         this.showTestArea()
         this.test()
