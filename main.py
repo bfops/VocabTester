@@ -112,11 +112,11 @@ class Application(Frame):
             this.defnBox = Text(this, width = 20, height = 10)
             this.defnBox.grid(row = 1, column = 6)
 
-            Button(this, text = "Add", command = this.addNamedSection).grid(sticky = E+W)
-            Button(this, text = "Add", command = this.addNamedEntry).grid(row = 2, column = 3, sticky = E+W)
+            Button(this, text = "Add", command = lambda : this.addSection(this.sectionName.get())).grid(sticky = E+W)
+            Button(this, text = "Add", command = lambda : this.addEntry(this.entryName.get())).grid(row = 2, column = 3, sticky = E+W)
 
-            Button(this, text = "Rename", command = this.renameSelectedSection).grid(row = 2, column = 1, sticky = E+W)
-            Button(this, text = "Rename", command = this.renameSelectedEntry).grid(row = 2, column = 4, sticky = E+W)
+            Button(this, text = "Rename", command = lambda : this.renameSelectedSection(this.sectionName.get())).grid(row = 2, column = 1, sticky = E+W)
+            Button(this, text = "Rename", command = lambda : this.renameSelectedEntry(this.entryName.get())).grid(row = 2, column = 4, sticky = E+W)
 
             this.sectionName = Entry(this)
             this.sectionName.grid(columnspan = 2)
@@ -131,16 +131,16 @@ class Application(Frame):
             for section in this.dictionary.sections:
                 this.sectionBox.insert(END, section.name)
 
-        def addNamedSection(this):
+        def addSection(this, name):
             pass
 
-        def addNamedEntry(this):
+        def addEntry(this, name):
             pass
 
-        def renameSelectedSection(this):
+        def renameSelectedSection(this, name):
             pass
 
-        def renameSelectedEntry(this):
+        def renameSelectedEntry(this, name):
             pass
 
     def __init__(this, title = ""):
