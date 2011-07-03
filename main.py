@@ -124,6 +124,13 @@ class Application(Frame):
             this.entryName = Entry(this)
             this.entryName.grid(columnspan = 2, row = 3, column = 3)
 
+        def populateSectionList(this):
+            this.sectionBox.delete(0, END)
+            this.entryBox.delete(0, END)
+
+            for section in this.dictionary.sections:
+                this.sectionBox.insert(END, section.name)
+
         def addNamedSection(this):
             pass
 
@@ -139,6 +146,7 @@ class Application(Frame):
     def __init__(this, title = ""):
         def attemptFileLoad():
             if this.loadFile(this.filename.get()):
+                this.dictionaryWindow.populateSectionList()
                 this.defnBox.focus_set()
 
         Frame.__init__(this)
