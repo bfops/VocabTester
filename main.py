@@ -99,6 +99,11 @@ class Application(Frame):
 
             this.sectionBox = Listbox(this, selectmode = SINGLE)
             this.sectionBox.grid(columnspan = 2)
+            this.sectionBox.bind(
+                "<<ListboxSelect>>",
+                lambda e : this.populateEntryList(int(this.sectionBox.curselection()[0]))
+            )
+
             this.sectionScroll = Scrollbar(this, command = this.sectionBox.yview, takefocus = 0)
             this.sectionScroll.grid(row = 1, column = 2, sticky = N+S)
             this.sectionBox["yscrollcommand"] = this.sectionScroll.set
@@ -144,6 +149,12 @@ class Application(Frame):
 
             for section in this.dictionary.sections:
                 this.sectionBox.insert(END, section.name)
+
+        def populateEntryList(this, sectionN):
+            this.entryBox.delete(0, END)
+
+            for entry in this.dictionary.sections[sectionN].entries:
+                this.entryBox.insert(END, entry.term)
 
         def addSection(this, name):
             pass
