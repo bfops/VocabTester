@@ -110,6 +110,11 @@ class Application(Frame):
 
             this.entryBox = Listbox(this)
             this.entryBox.grid(columnspan = 2, row = 1, column = 3)
+            this.entryBox.bind(
+                "<<ListboxSelect>>",
+                lambda e : this.displayDefn(int(this.entryBox.curselection()[0]))
+            )
+
             this.entryScroll = Scrollbar(this, command = this.entryBox.yview, takefocus = 0)
             this.entryScroll.grid(row = 1, column = 5, sticky = N+S)
             this.entryBox["yscrollcommand"] = this.entryScroll.set
@@ -144,6 +149,7 @@ class Application(Frame):
             this.entryName.grid(columnspan = 2, row = 3, column = 3)
 
         def populateSectionList(this):
+            this.selectedSection = None
             this.sectionBox.delete(0, END)
             this.entryBox.delete(0, END)
 
@@ -151,10 +157,15 @@ class Application(Frame):
                 this.sectionBox.insert(END, section.name)
 
         def populateEntryList(this, sectionN):
+            this.selectedSection = this.dictionary.sections[sectionN]
             this.entryBox.delete(0, END)
 
-            for entry in this.dictionary.sections[sectionN].entries:
+            for entry in this.selectedSection.entries:
                 this.entryBox.insert(END, entry.term)
+
+        def displayDefn(this, entryN):
+            this.defnBox.delete("0.0", END)
+            this.defnBox.insert("0.0", this.selectedSection.entries[entryN].defn)
 
         def addSection(this, name):
             pass
