@@ -172,7 +172,7 @@ class Application(Frame):
         this.winfo_toplevel().resizable(False, False)
         this.grid()
 
-        # TODO: Closing any way window should leave the others alive.
+        # TODO: Closing any window should leave the others alive.
         this.dictionary = this.Dictionary()
         this.dictionaryWindow = this.DictionaryGUI(this.dictionary, "Dictionary")
 
