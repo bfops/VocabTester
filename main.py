@@ -21,8 +21,9 @@ class Application(Frame):
                 this.load(stream)
 
         def load(this, stream):
+            seperator = " | "
             def parseLine(raw):
-                breakIndex = raw.find("|")
+                breakIndex = raw.find(seperator)
                 if breakIndex == -1:
                     return None
 
@@ -36,11 +37,11 @@ class Application(Frame):
                     return None
 
                 raw = raw[1 : -1]
-                splitIndex = raw.find("|")
+                splitIndex = raw.find(seperator)
                 if splitIndex == -1:
                     return None
 
-                return (raw[:splitIndex].strip(), raw[splitIndex + 1:].strip())
+                return (raw[:splitIndex].strip(), raw[splitIndex + len(seperator):].strip())
 
             this.language = readLanguage(stream)
 
