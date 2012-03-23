@@ -1,6 +1,6 @@
 {Lojban | English}
 
---gismu
+\gismu
 cmene | x1 is the name/label given to x2 by x3
 dunda | x1 gives x2 to x3
 batci | x1 bites/pinches x2 at locus x3 with x4
@@ -74,7 +74,7 @@ tcita | x1 is a label/tag of x2 showing information x3 (as in sumti tcita).
 viska | x1 sees/views/perceives visually x2 under conditions x3.
 zvati | x1 (object/event) is at/attending/present at x2 (event/location).
 
---cmavo
+\cmavo
 nu | encapsulates the state/event of the accompanying [bridi].
 se | swaps the first and second places of the bridi in which it appears.
 te | swaps the first and third places of the bridi in which it appears.
@@ -115,7 +115,7 @@ lei | the mass whose members are described as
 ti'u | adds a place to the current bridi to describe daytime
 de'i | adds a place to the current bridi to describe date
 
---emot
+\emot
 .a'o | hope
 .ie | agreement
 .i'e | approval
@@ -128,7 +128,7 @@ de'i | adds a place to the current bridi to describe date
 .uu | pity/sympathy
 [emot]nai | opposite of [emot]
 
---math/numerics
+\math/numerics
 du'e | too many
 so'a | almost all
 so'e | most
@@ -144,7 +144,7 @@ ni'u | negative
 ki'o | Thousands seperator (if trailing, it is assumed to mean x10^3)
 [number] fi'u [number] | [number1] out of [number2]
 
---time/date
+\time/date
 la [number]cac. | [number] o'clock (12-hour time)
 lir. | A.M.
 lec. | P.M.
@@ -165,7 +165,7 @@ crisa | Summer
 critu | Autumn
 dunra | Winter
 
---misc
+\misc
 brivla | predicate
 selbri | predicate/function
 [selbri] [selbri] | a compound selbri: [selbri1] of type [selbri2].
