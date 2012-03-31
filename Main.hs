@@ -36,9 +36,10 @@ untilFail :: Parser a -> Parser [a]
 untilFail = many . try
 
 phrase :: Parser T.Text
-phrase = (T.pack . concat <$> untilFail prefixWord) >>= (\x -> spaces >> return x)
+phrase = (T.pack . concat <$> untilFail prefixWord) >>= spaced
     where prefixWord = many (oneOf sepChars) <+> many1 (noneOf endChars)
           endChars = "\\\n\r\f|{}" ++ sepChars
+          spaced x = spaces >> return x
           sepChars = " \t"
 
 text :: String -> Parser T.Text
@@ -56,6 +57,7 @@ remove :: Int -> S.Seq a -> S.Seq a
 remove i s = (S.><) pre $ S.drop 1 post
     where (pre, post) = S.splitAt i s
 
+-- last valid index of a sequence
 lastI :: S.Seq a -> Int
 lastI s = S.length s - 1
 
