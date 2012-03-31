@@ -12,5 +12,10 @@ Executable VocabTester
     GHC-Options:       -Wall -threaded -rtsopts=all -fllvm
 
     Build-Depends:     base,
-                       parsec ==3.*
+                       parsec ==3.*,
+                       array ==0.*,
+                       containers ==0.*,
+                       random ==1.*,
+                       mtl ==2.*,
+                       text ==0.*
 
