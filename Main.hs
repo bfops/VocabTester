@@ -2,8 +2,9 @@ module Main (main) where
 
 import Control.Applicative((<$>),(<*>))
 import Control.Exception(bracket)
+import Control.Monad.State hiding (fix)
 import qualified Data.Sequence as S
-import Data.Foldable hiding (concat)
+import qualified Data.Foldable as F
 import Data.Singleton
 import qualified Data.Text as T
 import Data.Tuple
@@ -14,21 +15,26 @@ import System.Random
 import Text.Parsec.Text
 import Text.Parsec.Char
 import Text.Parsec.Combinator
-import Text.Parsec.Prim
+import Text.Parsec.Prim hiding (State)
+
+type Trans = (T.Text, T.Text)
 
 -- | Translations between words.
-data Dictionary = Dictionary { lang :: (T.Text, T.Text) -- ^ The dictionary language
-                             , cats :: S.Seq Category   -- ^ Sections of the dictionary (e.g. nouns, verbs)
+data Dictionary = Dictionary { lang :: Trans          -- ^ The dictionary language
+                             , cats :: S.Seq Category -- ^ Sections of the dictionary (e.g. nouns, verbs)
                              }
     deriving (Show)
 
-data Category = Category { name    :: T.Text                 -- ^ Category name
-                         , entries :: S.Seq (T.Text, T.Text) -- ^ Dictionary entries
+data Category = Category { name    :: T.Text      -- ^ Category name
+                         , entries :: S.Seq Trans -- ^ Dictionary entries
                          }
     deriving (Show)
 
 (<+>) :: Parser [a] -> Parser [a] -> Parser [a]
 (<+>) x y = (++) <$> x <*> y
+
+iff :: Bool -> a -> a -> a
+iff b t f = if b then t else f
 
 -- Repeatedly run a parser (collecting results in an array) until it fails.
 -- Failing will not consume input.
@@ -61,31 +67,44 @@ remove i s = (S.><) pre $ S.drop 1 post
 lastI :: S.Seq a -> Int
 lastI s = S.length s - 1
 
+interval :: S.Seq a -> (Int, Int)
+interval s = (0, lastI s)
+
+whileM :: Monad m => (a -> Bool) -> (a -> m a) -> a -> m a
+whileM p f = iff <$> p <*> (whileM p f =<<).f <*> return
+
+doWhileM :: Monad m => (a -> Bool) -> (a -> m a) -> a -> m a
+doWhileM p f x = f x >>= whileM p f
+
+rangeGen :: RandomGen g => (Int, Int) -> State g Int
+rangeGen = state . randomR
+
+nonEmptyIGen s = doWhileM (S.null . entries . S.index s) (const.rangeGen $ interval s) 0
+
 quiz :: Dictionary -> IO ()
 quiz = (getStdGen >>=) . quiz'
-    where quiz' d g = if S.null . foldr' ((S.><) . entries) S.empty $ cats d
-                      then putStrLn "Finished the dictionary!"
-                      else quizCatRand d g
+    where quiz' d g = whileM (F.any (not . S.null . entries) . cats . fst)
+                             (ioStep . randStep)
+                             (d, g)
+                    >> putStrLn "Finished the dictionary!"
 
-          quizCatRand d g = let (i, g') = randomR (0, lastI $ cats d) g
-                            in quiz'' d i g' $ S.index (cats d) i
+          randStep (d, g) = flip runState g $ do i <- nonEmptyIGen $ cats d
+                                                 let c = S.index (cats d) i
+                                                 j <- rangeGen.interval $ entries c
+                                                 s <- rangeGen (0, 1)
+                                                 let f = if s == 0
+                                                         then swap
+                                                         else id
+                                                 return (name c, f $ S.index (entries c) j, f $ lang d, fix d i j)
+                                                 
+          ioStep ((n, e, l, d), g) = prompt n e l >> return (d, g)
 
-          quiz'' d i g c = if S.null $ entries c
-                           then quizCatRand d g
-                           else let (j, g') = randomR (0, lastI $ entries c) g
-                                in prompt g' (S.index (entries c) j) >>= quiz' (fix d i j)
-
-          considerSwap g e = let (i, g') = randomR (0, 1) g
-                             in (g', if i == (0 :: Int)
-                                     then e
-                                     else swap e)
-
-          prompt g e = let (g', (q, a)) = considerSwap g e
-                       in putStrLn (T.unpack q)
-                       >> getLine
-                       >> putStrLn (T.unpack a)
-                       >> putStrLn ""
-                       >> return g'
+          prompt n (q, a) (from, to) = putStrLn ((T.unpack from) ++ " -> " ++ (T.unpack to))
+                                     >> putStrLn (T.unpack n)
+                                     >> putStrLn (T.unpack q)
+                                     >> getLine
+                                     >> putStrLn (T.unpack a)
+                                     >> putStrLn ""
 
           fix d i j = d { cats = S.adjust (fix' j) i $ cats d }
           fix' j c = c { entries = remove j $ entries c }
