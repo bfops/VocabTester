@@ -48,6 +48,7 @@ phrase = (T.pack . concat <$> untilFail prefixWord) >>= spaced
           spaced x = spaces >> return x
           sepChars = " \t"
 
+-- like the `string` parser, but for Text
 text :: String -> Parser T.Text
 text = fmap T.pack . string
 
@@ -59,6 +60,7 @@ parser = spaces >> Dictionary <$> between (spaceChar '{') (spaceChar '}') assoc 
           prefix x = x >> spaces >> phrase
           spaceChar c = text [c] >> spaces
 
+-- remove an index from a sequence. O(log(min(i, n-i))).
 remove :: Int -> S.Seq a -> S.Seq a
 remove i s = (S.><) pre $ S.drop 1 post
     where (pre, post) = S.splitAt i s
@@ -67,19 +69,29 @@ remove i s = (S.><) pre $ S.drop 1 post
 lastI :: S.Seq a -> Int
 lastI s = S.length s - 1
 
+--the interval of valid indices in the sequence
 interval :: S.Seq a -> (Int, Int)
 interval s = (0, lastI s)
 
+--while loop for monads
 whileM :: Monad m => (a -> Bool) -> (a -> m a) -> a -> m a
 whileM p f = iff <$> p <*> (whileM p f =<<).f <*> return
 
+--do while loop for monads
 doWhileM :: Monad m => (a -> Bool) -> (a -> m a) -> a -> m a
 doWhileM p f x = f x >>= whileM p f
 
+-- generator for a range
 rangeGen :: RandomGen g => (Int, Int) -> State g Int
 rangeGen = state . randomR
 
+--generate only indices of categories with entries in them.
+nonEmptyIGen :: RandomGen g => S.Seq Category -> State g Int
 nonEmptyIGen s = doWhileM (S.null . entries . S.index s) (const.rangeGen $ interval s) 0
+
+-- getLine with some prompt text
+getStrLn :: String -> IO String
+getStrLn s = putStr s >> hFlush stdout >> getLine
 
 quiz :: Dictionary -> IO ()
 quiz = (getStdGen >>=) . quiz'
@@ -99,12 +111,12 @@ quiz = (getStdGen >>=) . quiz'
                                                  
           ioStep ((n, e, l, d), g) = prompt n e l >> return (d, g)
 
-          prompt n (q, a) (from, to) = putStrLn ((T.unpack from) ++ " -> " ++ (T.unpack to))
-                                     >> putStrLn (T.unpack n)
-                                     >> putStrLn (T.unpack q)
-                                     >> getLine
-                                     >> putStrLn (T.unpack a)
-                                     >> putStrLn ""
+          prompt n (q, a) (from, to) = do putStrLn $ "Language: " ++  T.unpack from ++ " -> " ++ T.unpack to
+                                          putStrLn $ "Category: " ++ T.unpack n
+                                          putStrLn $ "  Phrase: " ++ T.unpack q
+                                          getStrLn $ "   Guess: "
+                                          putStrLn $ "  Answer: " ++ T.unpack a
+                                          putStrLn ""
 
           fix d i j = d { cats = S.adjust (fix' j) i $ cats d }
           fix' j c = c { entries = remove j $ entries c }

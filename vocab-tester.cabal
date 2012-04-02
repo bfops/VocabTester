@@ -9,7 +9,7 @@ Cabal-Version:       >= 1.9.2
 Executable VocabTester
     hs-source-dirs:    ./
     Main-is:           Main.hs
-    GHC-Options:       -Wall -threaded -rtsopts=all -fllvm
+    GHC-Options:       -Wall -threaded -rtsopts=all -fllvm -fno-warn-unused-do-bind
 
     Build-Depends:     base,
                        parsec ==3.*,
