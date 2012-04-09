@@ -1,6 +1,7 @@
 module Main (main) where
 
 import Control.Applicative((<$>),(<*>))
+import Control.Combinator
 import Control.Exception(bracket)
 import Control.Monad.State hiding (fix)
 import qualified Data.Sequence as S
@@ -50,7 +51,7 @@ phrase = (T.pack . concat <$> untilFail prefixWord) >>= spaced
 
 -- like the `string` parser, but for Text
 text :: String -> Parser T.Text
-text = fmap T.pack . string
+text = (T.pack <$>) . string
 
 parser :: Parser Dictionary
 parser = spaces >> Dictionary <$> between (spaceChar '{') (spaceChar '}') assoc <*> (S.fromList <$> untilFail section)
@@ -62,8 +63,7 @@ parser = spaces >> Dictionary <$> between (spaceChar '{') (spaceChar '}') assoc 
 
 -- remove an index from a sequence. O(log(min(i, n-i))).
 remove :: Int -> S.Seq a -> S.Seq a
-remove i s = (S.><) pre $ S.drop 1 post
-    where (pre, post) = S.splitAt i s
+remove = uncurry ((S.><) `on2` S.drop 1) `pass2` S.splitAt
 
 -- last valid index of a sequence
 lastI :: S.Seq a -> Int
