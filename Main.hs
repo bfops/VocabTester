@@ -1,17 +1,17 @@
 module Main (main) where
 
-import Control.Applicative((<$>),(<*>))
-import Control.Combinator
+import Prelude ()
+import Util.Prelewd hiding (drop, length, splitAt, null)
+
 import Control.Exception(bracket)
 import Control.Monad.State hiding (fix)
-import qualified Data.Sequence as S
-import qualified Data.Foldable as F
-import Data.Singleton
+import Data.Sequence
 import qualified Data.Text as T
+import Data.Either
 import Data.Tuple
-import System.IO
-import System.Environment
-import System.Random
+import Text.Show
+
+import Util.IO
 
 import Text.Parsec.Text
 import Text.Parsec.Char
@@ -22,20 +22,17 @@ type Trans = (T.Text, T.Text)
 
 -- | Translations between words.
 data Dictionary = Dictionary { lang :: Trans          -- ^ The dictionary language
-                             , cats :: S.Seq Category -- ^ Sections of the dictionary (e.g. nouns, verbs)
+                             , cats :: Seq Category -- ^ Sections of the dictionary (e.g. nouns, verbs)
                              }
     deriving (Show)
 
 data Category = Category { name    :: T.Text      -- ^ Category name
-                         , entries :: S.Seq Trans -- ^ Dictionary entries
+                         , entries :: Seq Trans -- ^ Dictionary entries
                          }
     deriving (Show)
 
 (<+>) :: Parser [a] -> Parser [a] -> Parser [a]
-(<+>) x y = (++) <$> x <*> y
-
-iff :: Bool -> a -> a -> a
-iff b t f = if b then t else f
+(<+>) = liftA2 (++)
 
 -- Repeatedly run a parser (collecting results in an array) until it fails.
 -- Failing will not consume input.
@@ -54,23 +51,23 @@ text :: String -> Parser T.Text
 text = (T.pack <$>) . string
 
 parser :: Parser Dictionary
-parser = spaces >> Dictionary <$> between (spaceChar '{') (spaceChar '}') assoc <*> (S.fromList <$> untilFail section)
+parser = spaces >> Dictionary <$> between (spaceChar '{') (spaceChar '}') assoc <*> (fromList <$> untilFail section)
     where
-          section = Category <$> prefix (text "\\") <*> (S.fromList <$> untilFail assoc)
+          section = Category <$> prefix (text "\\") <*> (fromList <$> untilFail assoc)
           assoc = (,) <$> phrase <*> prefix (text "|")
           prefix x = x >> spaces >> phrase
           spaceChar c = text [c] >> spaces
 
 -- remove an index from a sequence. O(log(min(i, n-i))).
-remove :: Int -> S.Seq a -> S.Seq a
-remove = uncurry ((S.><) `on2` S.drop 1) `pass2` S.splitAt
+remove :: Int -> Seq a -> Seq a
+remove = uncurry ((><) .$ drop 1) $$ splitAt
 
 -- last valid index of a sequence
-lastI :: S.Seq a -> Int
-lastI s = S.length s - 1
+lastI :: Seq a -> Int
+lastI s = length s - 1
 
 --the interval of valid indices in the sequence
-interval :: S.Seq a -> (Int, Int)
+interval :: Seq a -> (Int, Int)
 interval s = (0, lastI s)
 
 --while loop for monads
@@ -86,28 +83,28 @@ rangeGen :: RandomGen g => (Int, Int) -> State g Int
 rangeGen = state . randomR
 
 --generate only indices of categories with entries in them.
-nonEmptyIGen :: RandomGen g => S.Seq Category -> State g Int
-nonEmptyIGen s = doWhileM (S.null . entries . S.index s) (const.rangeGen $ interval s) 0
+nonEmptyIGen :: RandomGen g => Seq Category -> State g Int
+nonEmptyIGen s = doWhileM (null . entries . index s) (const.rangeGen $ interval s) 0
 
 -- getLine with some prompt text
 getStrLn :: String -> IO String
 getStrLn s = putStr s >> hFlush stdout >> getLine
 
-quiz :: Dictionary -> IO ()
-quiz = (getStdGen >>=) . quiz'
-    where quiz' d g = whileM (F.any (not . S.null . entries) . cats . fst)
-                             (ioStep . randStep)
-                             (d, g)
-                    >> putStrLn "Finished the dictionary!"
+runQuiz :: Dictionary -> IO ()
+runQuiz = (getStdGen >>=) . runQuiz'
+    where runQuiz' d g = whileM (any (not . null . entries) . cats . fst)
+                                (ioStep . randStep)
+                                (d, g)
+                       >> putStrLn "Finished the dictionary!"
 
           randStep (d, g) = flip runState g $ do i <- nonEmptyIGen $ cats d
-                                                 let c = S.index (cats d) i
+                                                 let c = index (cats d) i
                                                  j <- rangeGen.interval $ entries c
                                                  s <- rangeGen (0, 1)
                                                  let f = if s == 0
                                                          then swap
                                                          else id
-                                                 return (name c, f $ S.index (entries c) j, f $ lang d, fix d i j)
+                                                 return (name c, f $ index (entries c) j, f $ lang d, fix d i j)
                                                  
           ioStep ((n, e, l, d), g) = prompt n e l >> return (d, g)
 
@@ -118,11 +115,11 @@ quiz = (getStdGen >>=) . quiz'
                                           putStrLn $ "  Answer: " ++ T.unpack a
                                           putStrLn ""
 
-          fix d i j = d { cats = S.adjust (fix' j) i $ cats d }
+          fix d i j = d { cats = adjust (fix' j) i $ cats d }
           fix' j c = c { entries = remove j $ entries c }
 
 main :: IO ()
-main = getArgs >>= single (putStrLn "Provide a dictionary name") parseFile
-    where parseFile file = bracket (openFile file ReadMode) hClose quizFile
-          tryQuiz = either (putStrLn . ("Error parsing dictionary " ++) . show) quiz
-          quizFile h = hGetContents h >>= (tryQuiz . parse parser "" . T.pack)
+main = getArgs >>= maybe (putStrLn "Provide a dictionary name") parseFile . head
+    where parseFile file = bracket (openFile file ReadMode) hClose tryQuizFromFile
+          tryQuizFromFile h = hGetContents h >>= tryQuiz . parse parser "" . T.pack
+          tryQuiz = either (putStrLn . ("Error parsing dictionary " ++) . show) runQuiz
