@@ -1,4 +1,4 @@
-*.sw[a-p]
-dist/
+*.sw[a-z]
 *.zip
 
+dist
