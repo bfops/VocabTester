@@ -3,6 +3,7 @@ Version:             0.1
 Description:         Test vocabulary loaded from a file.
 Author:              Ben Foppa
 Maintainer:          benjamin.foppa@gmail.com
+License:             PublicDomain
 Build-Type:          Simple
 Cabal-Version:       >= 1.9.2
 
